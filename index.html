@@ -34,7 +34,7 @@ section {
   text-align: center;
   font-size: 2.4rem;
   margin-bottom: 0.5rem;
-  color: #4b2e83; /* deep purple */
+  color: #4b2e83;
 }
 
 .section-subtitle {
@@ -42,6 +42,18 @@ section {
   font-size: 1.1rem;
   color: #555;
   margin-bottom: 2.5rem;
+}
+
+/* Simple fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ================================
@@ -67,6 +79,11 @@ header {
   font-size: 1.4rem;
   font-weight: 700;
   color: #4b2e83;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -102,6 +119,12 @@ header {
   height: 100%;
   object-fit: cover;
   filter: brightness(75%);
+  transform: scale(1.02);
+  transition: transform 6s ease;
+}
+
+.hero-image-wrapper:hover .hero-image {
+  transform: scale(1.06);
 }
 
 .hero-content {
@@ -172,6 +195,11 @@ header {
   width: 100%;
   border-radius: 12px;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.story-image-wrapper:hover img {
+  transform: scale(1.03);
 }
 
 .story-caption {
@@ -240,6 +268,11 @@ header {
   max-width: 420px;
   border-radius: 12px;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.event-image-wrapper:hover img {
+  transform: scale(1.03);
 }
 
 .event-content {
@@ -258,28 +291,88 @@ header {
 }
 
 /* ================================
-   REGISTRY
+   GALLERY
 ================================ */
-.registry-buttons {
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
+  align-items: center;
+  z-index: 1200;
 }
 
-.registry-btn {
+.lightbox-inner img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 12px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ================================
+   RSVP
+================================ */
+.rsvp-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rsvp-form input,
+.rsvp-form textarea,
+.rsvp-form select {
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+#rsvp-submit {
   background: #4b2e83;
   color: white;
-  padding: 0.9rem 1.6rem;
+  padding: 0.8rem;
+  border: none;
   border-radius: 8px;
-  text-decoration: none;
+  cursor: pointer;
   font-weight: 600;
-  transition: 0.3s ease;
 }
 
-.registry-btn:hover {
+#rsvp-submit:hover {
   background: #6a42b3;
+}
+
+.rsvp-status {
+  font-size: 0.95rem;
+  color: #4b2e83;
 }
 
 /* ================================
@@ -333,6 +426,11 @@ header {
   color: #4b2e83;
 }
 
+/* Optional Disqus container */
+.disqus-container {
+  margin-top: 2rem;
+}
+
 /* ================================
    FOOTER
 ================================ */
@@ -355,7 +453,7 @@ footer {
   height: 100%;
   pointer-events: none;
   overflow: hidden;
-  z-index: 0;
+  z-index: 1; /* above background, below content */
 }
 
 .heart {
@@ -374,12 +472,38 @@ footer {
 /* ================================
    RESPONSIVE
 ================================ */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .hero-image-wrapper {
+    height: 55vh;
+  }
   .hero-content h1 {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
   }
   .hero-content h2 {
     font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav-links {
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .nav-links a {
+    margin: 0.2rem 0.8rem 0.2rem 0;
+  }
+  section {
+    padding: 2.2rem 1.2rem;
+  }
+  .hero-image-wrapper {
+    height: 50vh;
+  }
+  .gallery-item img {
+    height: 180px;
   }
 }
 
@@ -394,11 +518,12 @@ footer {
   <!-- HEADER + NAVIGATION -->
   <header>
     <nav class="nav">
-      <div class="nav-brand">Eric &amp; Maria</div>
       <div class="nav-links">
         <a href="#our-story">Our Story</a>
         <a href="#wedding-party">Wedding Party</a>
         <a href="#the-weekend">The Weekend</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#rsvp">RSVP</a>
         <a href="#registry">Registry</a>
         <a href="#we-are-married">We Are Married</a>
         <a href="#messages">Messages</a>
@@ -721,6 +846,64 @@ footer {
       </div>
 
     </section> <!-- END THE WEEKEND -->
+
+    <!-- ========================= -->
+    <!--          GALLERY          -->
+    <!-- ========================= -->
+    <section id="gallery">
+      <h2 class="section-title">Photo Gallery</h2>
+      <p class="section-subtitle">
+        A few of our favorite moments in the vineyards.
+      </p>
+
+      <div class="gallery-grid">
+        <!-- 12 images, all loaded via JS from imageConfig -->
+        <div class="gallery-item"><img id="gal1" src="" alt="Gallery photo 1" /></div>
+        <div class="gallery-item"><img id="gal2" src="" alt="Gallery photo 2" /></div>
+        <div class="gallery-item"><img id="gal3" src="" alt="Gallery photo 3" /></div>
+        <div class="gallery-item"><img id="gal4" src="" alt="Gallery photo 4" /></div>
+        <div class="gallery-item"><img id="gal5" src="" alt="Gallery photo 5" /></div>
+        <div class="gallery-item"><img id="gal6" src="" alt="Gallery photo 6" /></div>
+        <div class="gallery-item"><img id="gal7" src="" alt="Gallery photo 7" /></div>
+        <div class="gallery-item"><img id="gal8" src="" alt="Gallery photo 8" /></div>
+        <div class="gallery-item"><img id="gal9" src="" alt="Gallery photo 9" /></div>
+        <div class="gallery-item"><img id="gal10" src="" alt="Gallery photo 10" /></div>
+        <div class="gallery-item"><img id="gal11" src="" alt="Gallery photo 11" /></div>
+        <div class="gallery-item"><img id="gal12" src="" alt="Gallery photo 12" /></div>
+      </div>
+
+      <!-- Lightbox -->
+      <div id="lightbox" class="lightbox hidden">
+        <div class="lightbox-inner">
+          <img id="lightbox-img" src="" alt="Expanded gallery" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= -->
+    <!--            RSVP           -->
+    <!-- ========================= -->
+    <section id="rsvp">
+      <h2 class="section-title">RSVP</h2>
+      <p class="section-subtitle">
+        We would love to know if you can join us.
+      </p>
+
+      <div class="rsvp-form">
+        <input type="text" id="rsvp-name" placeholder="Your Name" />
+        <input type="email" id="rsvp-email" placeholder="Your Email" />
+        <select id="rsvp-attending">
+          <option value="">Will you attend?</option>
+          <option value="yes">Yes, I’ll be there</option>
+          <option value="no">Sorry, I can’t make it</option>
+        </select>
+        <textarea id="rsvp-message" placeholder="Message (optional)"></textarea>
+        <button id="rsvp-submit">Send RSVP</button>
+        <p id="rsvp-status" class="rsvp-status"></p>
+      </div>
+    </section>
+
+
     <!-- ========================= -->
     <!--         REGISTRY          -->
     <!-- ========================= -->
@@ -824,7 +1007,12 @@ footer {
       <!-- MESSAGE LIST -->
       <div id="message-list" class="message-list">
         <!-- Messages will appear here via JavaScript -->
-      </div>
+
+      <!-- OPTIONAL: Disqus embed (activate when ready) -->
+<div id="disqus_thread" class="disqus-container">
+  <!-- Disqus will load here once you add your script and shortname -->
+</div>
+
 
     </section> <!-- END MESSAGES -->
 
@@ -842,40 +1030,36 @@ footer {
   <!-- JavaScript will be added in Part 8 -->
   <script>
 /* ============================================================
-   IMAGE CONFIG — All stock photos embedded here
-   Moody Vineyard (VY2) + Romantic but Tasteful + Mixed Couples
+   IMAGE CONFIG — Updated, working URLs + Gallery
 ============================================================ */
 const imageConfig = {
   heroes: {
     ourStory: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
-    weddingParty: "https://images.unsplash.com/photo-1529634806980-cd3e2f1f1c9a?auto=format&fit=crop&w=1600&q=80",
+    weddingParty: "https://images.unsplash.com/photo-1529638405123-4e3a3b2a5f2c?auto=format&fit=crop&w=1600&q=80",
     weekend: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1600&q=80",
     registry: "https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=1600&q=80",
-    married: "https://images.unsplash.com/photo-1529638405123-4e3a3b2a5f2c?auto=format&fit=crop&w=1600&q=80"
+    married: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80"
   },
 
   story: {
-    howWeMet: "https://images.unsplash.com/photo-1500048993959-dc1e3f5f94c3?auto=format&fit=crop&w=1200&q=80",
+    howWeMet: "https://images.unsplash.com/photo-1500043201641-5f07a4c37e4f?auto=format&fit=crop&w=1200&q=80",
     howItWent: "https://images.unsplash.com/photo-1529638405123-4e3a3b2a5f2c?auto=format&fit=crop&w=1200&q=80",
-    proposal: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80"
+    proposal: "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1200&q=80"
   },
 
   weddingParty: {
-    // Bridesmaids (mix of natural + neutral)
-    bm1: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
+    bm1: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
     bm2: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
     bm3: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
     bm4: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
     bm5: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
 
-    // Groomsmen (mix of natural + neutral)
-    gm1: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
-    gm2: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
-    gm3: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
-    gm4: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
-    gm5: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
+    gm1: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+    gm2: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+    gm3: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+    gm4: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+    gm5: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
 
-    // VIPs
     vip1: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
     vip2: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80"
   },
@@ -884,9 +1068,23 @@ const imageConfig = {
     fri: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1200&q=80",
     sat: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
     sun: "https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=1200&q=80"
-  }
-};
+  },
 
+  gallery: [
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1500534314211-0a24cd03f2c0?auto=format&fit=crop&w=1200&q=80"
+  ]
+};
 
 /* ============================================================
    APPLY IMAGES TO THE PAGE
@@ -907,20 +1105,46 @@ function applyImages() {
   // Wedding Party
   ["bm1","bm2","bm3","bm4","bm5","gm1","gm2","gm3","gm4","gm5","vip1","vip2"]
     .forEach(id => {
-      document.getElementById(id).src = imageConfig.weddingParty[id];
+      const el = document.getElementById(id);
+      if (el) el.src = imageConfig.weddingParty[id];
     });
 
   // Weekend
   document.getElementById("fri-event").src = imageConfig.weekend.fri;
   document.getElementById("sat-event").src = imageConfig.weekend.sat;
   document.getElementById("sun-event").src = imageConfig.weekend.sun;
+
+  // Gallery
+  imageConfig.gallery.forEach((url, index) => {
+    const img = document.getElementById(`gal${index + 1}`);
+    if (img) img.src = url;
+  });
 }
 
 applyImages();
 
+/* ============================================================
+   GALLERY LIGHTBOX
+============================================================ */
+const galleryItems = document.querySelectorAll(".gallery-item img");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+
+galleryItems.forEach(img => {
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.remove("hidden");
+  });
+});
+
+if (lightbox) {
+  lightbox.addEventListener("click", () => {
+    lightbox.classList.add("hidden");
+  });
+}
 
 /* ============================================================
-   HEARTS ANIMATION (Only on Our Story)
+   HEARTS ANIMATION (Our Story area)
 ============================================================ */
 function createHeart() {
   const heart = document.createElement("div");
@@ -935,13 +1159,18 @@ function createHeart() {
   setTimeout(() => heart.remove(), 7000);
 }
 
-// Only animate on Our Story section
+function isInOurStory() {
+  const section = document.getElementById("our-story");
+  if (!section) return false;
+  const rect = section.getBoundingClientRect();
+  return rect.top < window.innerHeight && rect.bottom > 0;
+}
+
 setInterval(() => {
-  if (window.scrollY < window.innerHeight * 1.2) {
+  if (isInOurStory()) {
     createHeart();
   }
-}, 600);
-
+}, 700);
 
 /* ============================================================
    MESSAGE BOARD
@@ -965,7 +1194,65 @@ document.getElementById("msg-submit").addEventListener("click", () => {
   document.getElementById("msg-name").value = "";
   document.getElementById("msg-text").value = "";
 });
+
+/* ============================================================
+   RSVP (mailto: fakeemail@nowhere.com)
+============================================================ */
+document.getElementById("rsvp-submit").addEventListener("click", () => {
+  const name = document.getElementById("rsvp-name").value.trim();
+  const email = document.getElementById("rsvp-email").value.trim();
+  const attending = document.getElementById("rsvp-attending").value;
+  const message = document.getElementById("rsvp-message").value.trim();
+  const status = document.getElementById("rsvp-status");
+
+  if (!name || !email || !attending) {
+    status.textContent = "Please fill in your name, email, and attendance choice.";
+    return;
+  }
+
+  const subject = encodeURIComponent("Wedding RSVP");
+  const body = encodeURIComponent(
+    `Name: ${name}\nEmail: ${email}\nAttending: ${attending}\n\nMessage:\n${message || "(none)"}`
+  );
+
+  window.location.href = `mailto:fakeemail@nowhere.com?subject=${subject}&body=${body}`;
+  status.textContent = "Your email client should open with your RSVP. Thank you!";
+});
+
+/* ============================================================
+   SCROLL FADE-IN ANIMATIONS
+============================================================ */
+const fadeEls = document.querySelectorAll("section, .wp-card, .event-block, .gallery-item");
+
+function handleScrollFade() {
+  const trigger = window.innerHeight * 0.9;
+  fadeEls.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < trigger) {
+      el.classList.add("visible");
+    }
+  });
+}
+
+fadeEls.forEach(el => el.classList.add("fade-in"));
+window.addEventListener("scroll", handleScrollFade);
+window.addEventListener("load", handleScrollFade);
+  /**
+   * REPLACE 'myweddingshortname' with your actual Disqus shortname.
+   */
+  var disqus_config = function () {
+    this.page.url = window.location.href;
+    this.page.identifier = "wedding-messages";
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://myweddingshortname.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
 </script>
+
 
 
 </body>
